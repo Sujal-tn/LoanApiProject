@@ -61,7 +61,7 @@ builder.Services.AddScoped<IForeClosureService, ForeClosureService>();
 builder.Services.AddScoped<IPaymentHistroyService, PaymentHistroyService>();
 builder.Services.AddScoped<IKycService, KycService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
-
+builder.Services.AddScoped<ILoanDealService, LoanDealService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<JwtTokenService>();
