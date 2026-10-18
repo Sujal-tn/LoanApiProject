@@ -1,0 +1,28 @@
+:host { display:block; min-height:100vh; }
+.dashboard-layout { display:flex; min-height:100vh; background:#f4f6fb; color:#202a36; }
+.sidebar { width:270px; min-width:270px; min-height:100vh; display:flex; flex-direction:column; overflow-y:auto; color:#fff; background:#082b60; }
+.officer-sidebar { width:252px; min-width:252px; background:linear-gradient(180deg,#0d6efd,#082b60); }
+.customer-sidebar { padding-top:15px; }
+.sidebar-caption { padding:0 32px 26px; color:#b8d3fa; font-size:.78rem; font-weight:800; letter-spacing:.13em; }
+.sidebar-title { padding:24px 20px 30px; font-size:28px; font-weight:700; white-space:nowrap; }
+.menu-item { display:flex; align-items:center; gap:14px; width:100%; padding:17px 20px; border:0; color:#fff; text-align:left; text-decoration:none; background:transparent; font-size:16px; cursor:pointer; }
+.menu-item:hover,.menu-item.active { background:rgba(255,255,255,.14); }
+.menu-item.active { box-shadow:inset 3px 0 #fff; font-weight:700; }
+.menu-heading { font-family:inherit; }
+.menu-heading > span:nth-child(2) { flex:1; }
+.menu-icon { width:22px; flex-shrink:0; font-size:21px; text-align:center; }
+.chevron { font-size:22px; }
+.submenu { display:flex; flex-direction:column; background:rgba(0,0,0,.15); }
+.submenu a { padding:14px 12px 14px 54px; color:#fff; text-decoration:none; font-size:14px; }
+.submenu a:hover,.submenu a.active { background:rgba(255,255,255,.14); }
+.logout-item { margin-top:auto; background:rgba(0,0,0,.2); }
+.dashboard-main { flex:1; min-width:0; padding:24px; }
+.top-bar { display:flex; align-items:center; justify-content:space-between; min-height:65px; padding:12px 22px; margin-bottom:22px; color:#fff; background:linear-gradient(100deg,#0866ff,#1749a6); border-radius:14px; }
+.top-bar-title { font-size:20px; font-weight:600; }
+.notification-button { width:42px; height:42px; border:0; border-radius:50%; color:#0866ff; background:#fff; font-size:22px; cursor:pointer; }
+.welcome-bar { display:flex; align-items:center; justify-content:space-between; gap:15px; padding:20px 26px; margin-bottom:24px; background:#fff; border-radius:15px; box-shadow:0 5px 18px rgba(0,0,0,.06); }
+.welcome-bar h2 { margin:0; color:#0866ff; font-size:23px; }
+.role-badge { padding:12px 20px; color:#fff; background:#0866ff; border-radius:30px; font-size:14px; }
+.dashboard-content { min-height:calc(100vh - 230px); padding:32px; background:#fff; border-radius:18px; box-shadow:0 5px 18px rgba(0,0,0,.05); }
+.routed-content { overflow:auto; }
+@media (max-width:700px) { .dashboard-layout { flex-direction:column; } .sidebar,.officer-sidebar { width:100%; min-width:0; min-height:auto; max-height:55vh; } .dashboard-main { padding:14px; } .welcome-bar { align-items:flex-start; flex-direction:column; } .dashboard-content { padding:20px; } }

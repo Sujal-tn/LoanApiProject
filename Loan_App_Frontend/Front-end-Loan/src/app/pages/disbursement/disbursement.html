@@ -1,0 +1,203 @@
+
+<div class="page-container">
+
+  <div class="page-heading">
+    <div>
+      <h2>Loan Disbursement</h2>
+      <p>Review customer details and disburse sanctioned loans.</p>
+    </div>
+    <span class="total-badge">{{ loans.length }} records</span>
+  </div>
+
+  <p class="success" *ngIf="message">{{ message }}</p>
+  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+  <div class="filter-bar">
+    <input
+      type="text"
+      [(ngModel)]="searchText"
+      placeholder="Search customer, deal ID, bank..."
+    />
+  </div>
+
+  <div class="loading" *ngIf="loading">
+    Loading pending disbursements...
+  </div>
+
+  <div class="table-wrapper" *ngIf="!loading">
+    <table>
+      <thead>
+        <tr>
+          <th>Deal ID</th>
+          <th>Customer</th>
+          <th>Monthly Income</th>
+          <th>Customer Bank</th>
+          <th>Approved Amount</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let loan of filteredLoans">
+          <td class="deal-id">
+            #{{ loan.dealId ?? loan.DealId }}
+          </td>
+
+          <td>
+            <div class="customer-name">
+              {{ loan.customerName ?? loan.CustomerName ?? 'N/A' }}
+            </div>
+            <small>
+              Customer ID: {{ loan.customerId ?? loan.CustomerId }}
+            </small>
+          </td>
+
+          <td>
+            {{ (loan.monthlyIncome ?? loan.MonthlyIncome) |
+              currency:'INR':'symbol':'1.0-2' }}
+          </td>
+
+          <td>{{ loan.bankName ?? loan.BankName ?? 'N/A' }}</td>
+
+          <td class="amount">
+            {{ (loan.approvedAmount ?? loan.ApprovedAmount ??
+                loan.disburseAmount ?? loan.DisburseAmount ?? 0) |
+                currency:'INR':'symbol':'1.0-2' }}
+          </td>
+
+          <td class="actions">
+            <button
+              class="btn btn-primary"
+              (click)="openDisburseModal(loan)">
+              Disburse
+            </button>
+          </td>
+        </tr>
+
+        <tr *ngIf="filteredLoans.length === 0">
+          <td colspan="6" class="empty-state">
+            No matching loans are awaiting disbursement.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    <button (click)="previousPage()" [disabled]="page <= 1">
+      Previous
+    </button>
+    <span>Page {{ page }} of {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="page >= totalPages">
+      Next
+    </button>
+  </div>
+
+  <!-- Disbursement Confirmation Modal -->
+  <div
+    class="modal-backdrop"
+    *ngIf="showDisburseModal"
+    (click)="closeDisburseModal()">
+
+    <div
+      class="modal-card"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="disburse-title"
+      (click)="$event.stopPropagation()">
+
+      <div class="modal-header">
+        <div>
+          <h3 id="disburse-title">Confirm Loan Disbursement</h3>
+          <p>Verify the loan and bank details before proceeding.</p>
+        </div>
+
+        <button
+          class="modal-close"
+          [disabled]="saving"
+          (click)="closeDisburseModal()">×</button>
+      </div>
+
+      <div class="modal-body" *ngIf="selectedLoan">
+
+        <div class="detail-card">
+          <span>Customer Name</span>
+          <strong>
+            {{ selectedLoan.customerName ?? selectedLoan.CustomerName ?? 'N/A' }}
+          </strong>
+        </div>
+
+        <div class="detail-grid">
+          <div>
+            <label>Deal ID</label>
+            <strong>
+              #{{ selectedLoan.dealId ?? selectedLoan.DealId }}
+            </strong>
+          </div>
+
+          <div>
+            <label>Customer ID</label>
+            <strong>
+              {{ selectedLoan.customerId ?? selectedLoan.CustomerId }}
+            </strong>
+          </div>
+
+          <div>
+            <label>Customer Bank</label>
+            <strong>
+              {{ selectedLoan.bankName ?? selectedLoan.BankName ?? 'N/A' }}
+            </strong>
+          </div>
+
+          <div>
+            <label>Approved Amount</label>
+            <strong>
+              {{ (selectedLoan.approvedAmount ?? selectedLoan.ApprovedAmount ??
+                  selectedLoan.disburseAmount ?? selectedLoan.DisburseAmount ?? 0) |
+                  currency:'INR':'symbol':'1.0-2' }}
+            </strong>
+          </div>
+        </div>
+
+        <label for="disburseAmount">Disbursement Amount (₹)</label>
+        <input
+          id="disburseAmount"
+          type="number"
+          min="1"
+          [max]="selectedLoan.approvedAmount ?? selectedLoan.ApprovedAmount ??
+                 selectedLoan.disburseAmount ?? selectedLoan.DisburseAmount"
+          [(ngModel)]="disburseAmount"
+          placeholder="Enter disbursement amount"
+        />
+
+        <label for="bankPartner">Bank Partner</label>
+        <select
+          id="bankPartner"
+          [(ngModel)]="selectedBank">
+
+          <option *ngFor="let bank of bankPartners" [value]="bank">
+            {{ bank }}
+          </option>
+        </select>
+
+      </div>
+
+      <div class="modal-footer">
+        <button
+          class="btn btn-cancel"
+          [disabled]="saving"
+          (click)="closeDisburseModal()">
+          Cancel
+        </button>
+
+        <button
+          class="btn btn-success"
+          [disabled]="saving"
+          (click)="confirmDisbursement()">
+          {{ saving ? 'Processing...' : 'Confirm Disbursement' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

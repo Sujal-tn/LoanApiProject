@@ -1,0 +1,111 @@
+<div class="container mt-5">
+
+  <div class="result-card">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3>
+        <i class="fa-solid fa-circle-check text-primary"></i>
+        Eligibility Result
+      </h3>
+
+      <div class="top-actions">
+        <select class="form-select tenure-box" [(ngModel)]="tenureMonths">
+          <option *ngFor="let t of tenures" [ngValue]="t">{{t}} months</option>
+        </select>
+
+        <button class="btn btn-primary" (click)="checkEligibility()">Check Eligibility</button>
+      </div>
+    </div>
+
+    <div class="alert alert-danger" *ngIf="errorMessage()">
+      {{errorMessage()}}
+      <div class="mt-2" *ngIf="customer()">
+        <a routerLink="/cibil">Check the CIBIL score of this customer first</a>
+      </div>
+    </div>
+
+    <div class="row">
+
+      <div class="col-md-6">
+        <div class="info-box">
+          <label>Customer Name</label>
+          <h5>{{customer()?.customerName || '-'}}</h5>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="info-box">
+          <label>PAN Number</label>
+          <h5>{{customer()?.panNo || '-'}}</h5>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="info-box">
+          <label>Monthly Income</label>
+          <h5>₹ {{customer()?.monthlyIncome ?? '-'}}</h5>
+        </div>
+      </div>
+
+      <ng-container *ngIf="result() as r">
+        <div class="col-md-6">
+          <div class="info-box">
+            <label>CIBIL Score</label>
+            <h5>{{r.cibilScore}}</h5>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="info-box">
+            <label>Loan Amount</label>
+            <h5>₹ {{r.loanAmount}}</h5>
+          </div>
+        </div>
+      </ng-container>
+
+    </div>
+
+    <div class="status-box pending" *ngIf="!result()">
+      <h2>
+        <i class="fa-solid fa-clock"></i>
+        Pending
+      </h2>
+      <p>Your eligibility has not been checked yet.</p>
+    </div>
+
+    <ng-container *ngIf="result() as r">
+
+      <div class="status-box approved" *ngIf="r.isEligible=='Approved'">
+        <h2>
+          <i class="fa-solid fa-circle-check"></i>
+          Approved
+        </h2>
+        <p>Congratulations! Your loan eligibility is approved.</p>
+      </div>
+
+      <div class="status-box rejected" *ngIf="r.isEligible=='Rejected'">
+        <h2>
+          <i class="fa-solid fa-circle-xmark"></i>
+          Rejected
+        </h2>
+        <p>Your loan eligibility is rejected.</p>
+
+        <div *ngIf="r.rejectionReason">
+          <h6>Reason:</h6>
+          <p>{{r.rejectionReason}}</p>
+        </div>
+      </div>
+
+      <div class="status-box pending" *ngIf="r.isEligible!='Approved' && r.isEligible!='Rejected'">
+        <h2>
+          <i class="fa-solid fa-clock"></i>
+          Pending
+        </h2>
+        <p>Your eligibility is under review.</p>
+      </div>
+
+    </ng-container>
+
+  </div>
+
+</div>

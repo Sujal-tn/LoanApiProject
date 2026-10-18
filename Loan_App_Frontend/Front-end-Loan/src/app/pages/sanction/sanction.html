@@ -1,0 +1,277 @@
+
+<div class="page-container">
+
+  <!-- Page heading -->
+  <div class="page-heading">
+    <div>
+      <h2>Sanction Letters</h2>
+      <p>Generate and download letters for approved loans.</p>
+    </div>
+
+    <span class="total-badge">{{ loans.length }} records</span>
+  </div>
+
+  <!-- Messages -->
+  <p class="success" *ngIf="message">{{ message }}</p>
+  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+  <!-- Search -->
+  <div class="filter-bar">
+    <input
+      type="text"
+      [(ngModel)]="searchText"
+      placeholder="Search by customer name, deal ID or bank..."
+    />
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" *ngIf="loading">
+    Loading approved loans...
+  </div>
+
+  <!-- Sanction letters table -->
+  <div class="table-wrapper" *ngIf="!loading">
+    <table>
+      <thead>
+        <tr>
+          <th>Deal ID</th>
+          <th>Customer</th>
+          <th>Monthly Income</th>
+          <th>Bank Name</th>
+          <th>Approved Amount</th>
+          <th>Interest Rate</th>
+          <th>Tenure</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let loan of filteredLoans">
+
+          <td class="deal-id">
+            #{{ loan.dealId ?? loan.DealId }}
+          </td>
+
+          <td>
+            <div class="customer-name">
+              {{ loan.customerName ?? loan.CustomerName ?? 'N/A' }}
+            </div>
+            <small>
+              Customer ID: {{ loan.customerId ?? loan.CustomerId }}
+            </small>
+          </td>
+
+          <td>
+            {{ (loan.monthlyIncome ?? loan.MonthlyIncome) |
+              currency:'INR':'symbol':'1.0-2' }}
+          </td>
+
+          <td>
+            {{ loan.bankName ?? loan.BankName ?? 'N/A' }}
+          </td>
+
+          <td class="amount">
+            {{ (loan.approvedAmount ?? loan.ApprovedAmount) |
+              currency:'INR':'symbol':'1.0-2' }}
+          </td>
+
+          <td>
+            {{ loan.interestRate ?? loan.InterestRate }}%
+          </td>
+
+          <td>
+            {{ loan.tenureMonths ?? loan.TenureMonths }} months
+          </td>
+
+          <td class="actions">
+            <button
+              class="btn btn-primary"
+              [disabled]="saving"
+              (click)="openGenerateModal(loan)">
+              Generate
+            </button>
+
+            <button
+              class="btn btn-secondary"
+              (click)="downloadLetter(loan)">
+              Download PDF
+            </button>
+          </td>
+
+        </tr>
+
+        <tr *ngIf="filteredLoans.length === 0">
+          <td colspan="8" class="empty-state">
+            No matching approved loans found.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination">
+    <button
+      (click)="previousPage()"
+      [disabled]="page <= 1">
+      Previous
+    </button>
+
+    <span>Page {{ page }} of {{ totalPages }}</span>
+
+    <button
+      (click)="nextPage()"
+      [disabled]="page >= totalPages">
+      Next
+    </button>
+  </div>
+
+  <!-- Generate Sanction Letter Modal -->
+  <div
+    class="modal-backdrop"
+    *ngIf="showGenerateModal"
+    (click)="closeGenerateModal()">
+
+    <div
+      class="modal-card"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="generate-title"
+      (click)="$event.stopPropagation()">
+
+      <!-- Modal header -->
+      <div class="modal-header">
+        <h3 id="generate-title">Generate Sanction Letter</h3>
+
+        <button
+          class="modal-close"
+          [disabled]="saving"
+          (click)="closeGenerateModal()">
+          ×
+        </button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body" *ngIf="selectedLoan">
+
+        <div class="detail-field">
+          <label>Customer Name</label>
+          <input
+            type="text"
+            readonly
+            [value]="selectedLoan.customerName ?? selectedLoan.CustomerName ?? 'N/A'"
+          />
+        </div>
+
+        <div class="detail-grid">
+
+          <div class="detail-field">
+            <label>Deal ID</label>
+            <input
+              type="text"
+              readonly
+              [value]="selectedLoan.dealId ?? selectedLoan.DealId"
+            />
+          </div>
+
+          <div class="detail-field">
+            <label>Customer ID</label>
+            <input
+              type="text"
+              readonly
+              [value]="selectedLoan.customerId ?? selectedLoan.CustomerId"
+            />
+          </div>
+
+          <div class="detail-field">
+            <label>Monthly Income</label>
+            <input
+              type="text"
+              readonly
+              [value]="(selectedLoan.monthlyIncome ?? selectedLoan.MonthlyIncome) | currency:'INR':'symbol':'1.0-2'"
+            />
+          </div>
+
+          <div class="detail-field">
+            <label>Bank Name</label>
+            <input
+              type="text"
+              readonly
+              [value]="selectedLoan.bankName ?? selectedLoan.BankName ?? 'N/A'"
+            />
+          </div>
+
+          <div class="detail-field">
+            <label>Loan Type</label>
+            <input
+              type="text"
+              readonly
+              [value]="selectedLoan.loanType ?? selectedLoan.LoanType ?? 'N/A'"
+            />
+          </div>
+
+          <div class="detail-field">
+            <label>Approved Amount</label>
+            <input
+              type="text"
+              readonly
+              [value]="(selectedLoan.approvedAmount ?? selectedLoan.ApprovedAmount) | currency:'INR':'symbol':'1.0-2'"
+            />
+          </div>
+
+          <div class="detail-field">
+            <label>Interest Rate</label>
+            <input
+              type="text"
+              readonly
+              [value]="(selectedLoan.interestRate ?? selectedLoan.InterestRate) + '%'"
+            />
+          </div>
+
+          <div class="detail-field">
+            <label>Tenure</label>
+            <input
+              type="text"
+              readonly
+              [value]="(selectedLoan.tenureMonths ?? selectedLoan.TenureMonths) + ' months'"
+            />
+          </div>
+
+          <div class="detail-field">
+            <label>EMI Amount</label>
+            <input
+              type="text"
+              readonly
+              [value]="(selectedLoan.emiAmount ?? selectedLoan.EmiAmount) | currency:'INR':'symbol':'1.0-2'"
+            />
+          </div>
+
+        </div>
+
+        <p class="modal-note">
+          Verify the loan details before generating the official sanction letter.
+        </p>
+
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button
+          class="btn btn-cancel"
+          [disabled]="saving"
+          (click)="closeGenerateModal()">
+          Close
+        </button>
+
+        <button
+          class="btn btn-success"
+          [disabled]="saving"
+          (click)="generateLetter()">
+          {{ saving ? 'Generating...' : 'Generate Letter' }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,78 @@
+.top-actions {
+  display: flex;
+  align-items: center;
+}
+
+.top-actions input,
+.top-actions button {
+  margin-left: 10px;
+}
+
+.id-box {
+  width: 150px;
+}
+
+.meter {
+  width: min(320px, 100%);
+  height: 170px;
+  position: relative;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.meter-body,
+.meter-inner {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  border-radius: 320px 320px 0 0;
+}
+
+.meter-body {
+  width: 100%;
+  height: 160px;
+  background: conic-gradient(
+    from 270deg at 50% 100%,
+    #dc3545 0deg 45deg,
+    #fd7e14 45deg 112.5deg,
+    #198754 112.5deg 180deg
+  );
+}
+
+.meter-inner {
+  width: calc(100% - 40px);
+  height: 140px;
+  left: 20px;
+  background: #fff;
+  z-index: 1;
+}
+
+.needle {
+  position: absolute;
+  left: calc(50% - 2px);
+  bottom: 0;
+  width: 4px;
+  height: 140px;
+  border-radius: 4px 4px 0 0;
+  transform-origin: 50% 100%;
+  z-index: 2;
+}
+
+.needle-dot {
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #343a40;
+  transform: translateX(-50%);
+  z-index: 3;
+}
+
+.range {
+  width: min(280px, calc(100% - 40px));
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+}

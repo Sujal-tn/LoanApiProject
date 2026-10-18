@@ -1,0 +1,130 @@
+
+<div class="foreclosure-page">
+
+  <div class="page-header">
+    <div>
+      <h2>Foreclosure Request</h2>
+      <p>Manage your loan foreclosure request.</p>
+    </div>
+    <div class="header-icon">₹</div>
+  </div>
+
+  <!-- Loan Account -->
+  <div class="form-card">
+    <h3>Loan Account Details</h3>
+    <p class="subtitle">Select the loan you want to close.</p>
+
+    <label class="field-label">Loan Account Number</label>
+
+    <select class="form-select" (change)="onChangeLoan($event)">
+      <option *ngFor="let loan of loanaccounts"[value]="loan.loanAccountId">
+        {{ loan.loanAccountNo }}
+      </option>
+    </select>
+
+    <div class="loan-summary" *ngIf="selectedLoan">
+      <div class="summary-item">
+        <span>Account Number</span>
+        <strong>{{ selectedLoan.loanAccountNo }}</strong>
+      </div>
+      <div class="summary-item">
+        <span>Outstanding Principal</span>
+        <strong class="amount">
+          ₹{{ selectedLoan.outstandingPrincipal | number:'1.2-2' }}
+        </strong>
+      </div>
+
+      <div class="summary-item">
+        <span>Loan Status</span>
+        <strong class="status">{{ selectedLoan.status }}</strong>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Foreclosure Form -->
+  <form [formGroup]="foreclosureform" (ngSubmit)="submitrequest(foreclosureform.value)">
+    <div class="form-card">
+      <h3>Foreclosure Type</h3>
+      <p class="subtitle">Choose how you want to repay your loan.</p>
+
+      <div class="type-options">
+
+        <label class="type-option"
+               [class.selected]="foreclosureform.get('foreClosureType')?.value === 'Full'">
+
+          <input type="radio" formControlName="foreClosureType" value="Full">
+
+          <span class="radio-content">
+            <strong>Full Foreclosure</strong>
+            <small>Repay the outstanding loan amount.</small>
+          </span>
+
+          <span class="type-icon">✓</span>
+        </label>
+
+        <label class="type-option"
+               [class.selected]="foreclosureform.get('foreClosureType')?.value === 'Partial'">
+
+          <input type="radio"
+                 formControlName="foreClosureType"
+                 value="Partial">
+
+          <span class="radio-content">
+            <strong>Partial Foreclosure</strong>
+            <small>Repay a portion of your outstanding loan.</small>
+          </span>
+
+          <span class="type-icon">✓</span>
+        </label>
+
+      </div>
+
+      <!-- Partial Amount -->
+      <div class="field-group"
+           *ngIf="foreclosureform.get('foreClosureType')?.value === 'Partial'">
+
+        <label class="field-label">Partial Amount (₹)</label>
+
+        <input type="number"
+               class="form-control"
+               formControlName="partialAmount"
+               placeholder="Enter partial repayment amount">
+
+        <small class="hint">
+          Amount must be greater than zero and not exceed your outstanding principal.
+        </small>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Expected Closure Date</label>
+
+        <input type="date"
+               class="form-control"
+               formControlName="expectedClosureDate">
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Reason for Foreclosure</label>
+
+        <textarea class="form-control"
+                  rows="4"
+                  formControlName="reason"
+                  placeholder="Enter your reason here..."></textarea>
+      </div>
+
+      <div class="form-footer">
+        <span>Please review your details before submitting.</span>
+
+        <button type="submit" class="submit-btn">
+          Submit Request <span>→</span>
+        </button>
+      </div>
+
+    </div>
+  </form>
+
+</div>
+
+
+

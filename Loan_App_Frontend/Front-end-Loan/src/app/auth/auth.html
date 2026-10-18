@@ -1,0 +1,230 @@
+
+<div class="page">
+  <div class="auth-card">
+    <div class="logo">▤</div>
+
+    <h1>LoanApp</h1>
+    <p class="subtitle">Loan Management System</p>
+
+    <!-- LOGIN FORM -->
+    <form
+      *ngIf="mode === 'login'"
+      [formGroup]="loginForm"
+      (ngSubmit)="login()"
+    >
+      <label>Email</label>
+      <input
+        type="email"
+        formControlName="email"
+        placeholder="Enter your email"
+        required
+      />
+
+      <label>Password</label>
+      <input
+        type="password"
+        formControlName="password"
+        placeholder="Enter your password"
+        required
+      />
+
+      <div class="buttons">
+        <button
+          type="submit"
+          class="login-btn"
+          [disabled]="loading"
+        >
+          {{ loading ? 'Please wait...' : 'Login' }}
+        </button>
+
+        <button
+          type="button"
+          class="register-btn"
+          (click)="showRegister()"
+        >
+          Register
+        </button>
+      </div>
+
+      <!-- GOOGLE SIGN-IN -->
+      <div class="google-divider">
+        <span>OR</span>
+      </div>
+
+      <button
+        type="button"
+        class="google-btn"
+        (click)="signInWithGoogle()"
+        [disabled]="loading"
+      >
+        <span class="google-icon">G</span>
+        <span>Sign in with Google</span>
+      </button>
+    </form>
+
+    <!-- REGISTRATION FORM -->
+    <form
+      *ngIf="mode === 'register'"
+      [formGroup]="registerForm"
+      (ngSubmit)="register()"
+    >
+      <div class="form-grid">
+        <div>
+          <label>First Name</label>
+          <input formControlName="firstName" required />
+        </div>
+
+        <div>
+          <label>Last Name</label>
+          <input formControlName="lastName" required />
+        </div>
+
+        <div>
+          <label>Age</label>
+          <input type="number" formControlName="age" required />
+        </div>
+
+        <div>
+          <label>Mobile Number</label>
+          <input type="tel" formControlName="mobileNo" required />
+        </div>
+
+        <div class="full-width">
+          <label>Email</label>
+          <input
+            type="email"
+            formControlName="email"
+            required
+          />
+        </div>
+
+        <div class="full-width">
+          <label>Password</label>
+          <input
+            type="password"
+            formControlName="password"
+            required
+          />
+        </div>
+
+        <div>
+          <label>PAN Number</label>
+          <input formControlName="pan" required />
+        </div>
+
+        <div>
+          <label>Aadhaar Number</label>
+          <input formControlName="aadhaarNo" required />
+        </div>
+
+        <div>
+          <label>Employment Type</label>
+          <select formControlName="employmentType" required>
+            <option value="">Select employment</option>
+            <option value="private">Private</option>
+            <option value="government">Government</option>
+            <option value="self-employed">Self-employed</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Monthly Income (₹)</label>
+          <input
+            type="number"
+            formControlName="monthlyIncome"
+            required
+          />
+        </div>
+
+        <div class="full-width">
+          <label>Total Monthly Debt (₹)</label>
+          <input
+            type="number"
+            formControlName="totalMonthlyDebt"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="buttons">
+        <button
+          type="submit"
+          class="login-btn"
+          [disabled]="loading"
+        >
+          {{ loading ? 'Please wait...' : 'Register' }}
+        </button>
+
+        <button
+          type="button"
+          class="register-btn"
+          (click)="showLogin()"
+        >
+          Back to Login
+        </button>
+      </div>
+    </form>
+
+    <!-- REGISTRATION EMAIL OTP -->
+    <form
+      *ngIf="mode === 'registerOtp'"
+      [formGroup]="otpForm"
+      (ngSubmit)="verifyRegistrationOtp()"
+    >
+      <p>Enter the OTP sent to your email.</p>
+
+      <label>Email OTP</label>
+      <input
+        type="text"
+        formControlName="otp"
+        inputmode="numeric"
+        maxlength="6"
+        placeholder="Enter 6-digit OTP"
+        required
+      />
+
+      <button
+        type="submit"
+        class="login-btn full-button"
+        [disabled]="loading"
+      >
+        {{ loading ? 'Verifying...' : 'Verify OTP' }}
+      </button>
+    </form>
+
+    <!-- AUTHENTICATOR OTP -->
+    <form
+      *ngIf="mode === 'loginOtp'"
+      [formGroup]="otpForm"
+      (ngSubmit)="verifyLoginOtp()"
+    >
+      <div *ngIf="qrCode" class="qr-section">
+        <p>Scan this QR code using your authenticator app.</p>
+        <img [src]="qrCode" alt="Authenticator QR code" />
+      </div>
+
+      <label>Authenticator OTP</label>
+      <input
+        type="text"
+        formControlName="otp"
+        inputmode="numeric"
+        maxlength="6"
+        placeholder="Enter 6-digit code"
+        required
+      />
+
+      <button
+        type="submit"
+        class="login-btn full-button"
+        [disabled]="loading"
+      >
+        {{ loading ? 'Verifying...' : 'Verify & Login' }}
+      </button>
+    </form>
+
+    <!-- STATUS MESSAGE -->
+    <p *ngIf="message" class="message" role="status">
+      {{ message }}
+    </p>
+  </div>
+</div>

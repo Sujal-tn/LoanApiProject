@@ -1,0 +1,131 @@
+
+<div class="dashboard-layout officer-layout">
+
+  <aside class="sidebar officer-sidebar">
+    <div class="sidebar-title">Loan Officer</div>
+
+    <a class="menu-item" routerLink="/officer/dashboard">
+      <span class="menu-icon">◉</span>
+      <span>Dashboard</span>
+    </a>
+
+    <button class="menu-item menu-heading"
+      (click)="toggleMenu('customers')">
+      <span class="menu-icon">♧</span>
+      <span>Customer Management</span>
+      <span class="chevron">{{ openMenus['customers'] ? '⌄' : '›' }}</span>
+    </button>
+
+    <div class="submenu" *ngIf="openMenus['customers']">
+      <a routerLink="/officer/customers">Customers</a>
+      <a routerLink="/officer/kyc">KYC Verification</a>
+      <a routerLink="/officer/eligibility-check">Eligibility Check</a>
+      <a routerLink="/officer/score-cards">Score Cards</a>
+    </div>
+
+    <button class="menu-item menu-heading"
+      (click)="toggleMenu('loans')">
+      <span class="menu-icon">▣</span>
+      <span>Loan Processing</span>
+      <span class="chevron">{{ openMenus['loans'] ? '⌄' : '›' }}</span>
+    </button>
+
+ <div class="submenu" *ngIf="openMenus['loans']">
+  <a routerLink="/officer/loan-applications">Loan Applications</a>
+  <a routerLink="/loan-deal">Loan Deal</a>
+  <a routerLink="/sanction">Sanction Letter</a>
+  <a routerLink="/disbursement">Disbursement</a>
+</div>
+    <button class="menu-item menu-heading"
+      (click)="toggleMenu('requests')">
+      <span class="menu-icon">▤</span>
+      <span>Requests &amp; Collections</span>
+      <span class="chevron">{{ openMenus['requests'] ? '⌄' : '›' }}</span>
+    </button>
+
+    <div class="submenu" *ngIf="openMenus['requests']">
+      <a routerLink="/officer/closure-requests">Closure Requests</a>
+      <a routerLink="/officer/penalty-charges">Penalty Charges</a>
+    </div>
+
+    <a class="menu-item" routerLink="/officer/support-tickets">
+      <span class="menu-icon">▣</span>
+      <span>Support Tickets</span>
+    </a>
+
+    <button class="menu-item logout-item" (click)="logout()">
+      <span class="menu-icon">⇥</span>
+      <span>Logout</span>
+    </button>
+  </aside>
+
+  <main class="dashboard-main">
+    <header class="welcome-bar">
+      <h2>Welcome,</h2>
+      <span class="role-badge">Loan Officer Panel</span>
+    </header>
+
+    <section class="dashboard-content">
+      <h1>Loan Management Dashboard</h1>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total Customers</div>
+          <div class="stat-bottom">
+            <strong>1</strong><span>👥</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">Loan Customers</div>
+          <div class="stat-bottom">
+            <strong>1/1</strong><span>💰</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">Approved KYC</div>
+          <div class="stat-bottom">
+            <strong>1/1</strong><span>✅</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">Total Loan Amount</div>
+          <div class="stat-bottom">
+            <strong>₹3070000.00</strong><span>🏦</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">Active Loans</div>
+          <div class="stat-bottom">
+            <strong>8</strong><span>📑</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">Today's Collection</div>
+          <div class="stat-bottom">
+            <strong>₹0.00</strong><span>💵</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">Pending EMI</div>
+          <div class="stat-bottom">
+            <strong>132</strong><span>⌛</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">Foreclosure Requests</div>
+          <div class="stat-bottom">
+            <strong>0</strong><span>📋</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+</div>

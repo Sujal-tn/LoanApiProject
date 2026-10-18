@@ -1,0 +1,110 @@
+
+<div class="dashboard-layout customer-layout">
+
+  <aside class="sidebar customer-sidebar">
+    <button class="menu-item menu-heading"
+      (click)="toggleMenu('customer')">
+      <span class="menu-icon">◉</span>
+      <span>Customer</span>
+      <span class="chevron">{{ openMenus['customer'] ? '⌄' : '›' }}</span>
+    </button>
+
+    <div class="submenu" *ngIf="openMenus['customer']">
+      <a routerLink="/customer/dashboard">
+        <span>◉</span> Dashboard
+      </a>
+      <a routerLink="/customer/profile">Profile</a>
+      <a routerLink="/customer/kyc">KYC Verification</a>
+      <a routerLink="/customer/cibil-score">CIBIL Score</a>
+      <a routerLink="/customer/eligibility-result">Eligibility Result</a>
+    </div>
+
+    <button class="menu-item menu-heading"
+      (click)="toggleMenu('loans')">
+      <span class="menu-icon">▤</span>
+      <span>Loan Services</span>
+      <span class="chevron">{{ openMenus['loans'] ? '⌄' : '›' }}</span>
+    </button>
+
+    <div class="submenu" *ngIf="openMenus['loans']">
+      <a routerLink="/apply-loan">Apply Loan</a>
+      <a routerLink="/customer/track-status">Track Status</a>
+      <a routerLink="/customer/foreclosure-request">Foreclosure Request</a>
+    </div>
+
+    <button class="menu-item menu-heading"
+      (click)="toggleMenu('payments')">
+      <span class="menu-icon">▣</span>
+      <span>Payments</span>
+      <span class="chevron">{{ openMenus['payments'] ? '⌄' : '›' }}</span>
+    </button>
+
+    <div class="submenu" *ngIf="openMenus['payments']">
+      <a routerLink="/customer/emi-schedule">EMI Schedule</a>
+      <a routerLink="/customer/make-payments">Make Payments</a>
+      <a routerLink="/customer/payment-history">Payment History</a>
+      <a routerLink="/customer/my-penalties">My Penalties</a>
+    </div>
+
+    <a class="menu-item" routerLink="/customer/support">
+      <span class="menu-icon">▣</span>
+      <span>Support</span>
+    </a>
+
+    <button class="menu-item logout-item" (click)="logout()">
+      <span class="menu-icon">⇥</span>
+      <span>Logout</span>
+    </button>
+  </aside>
+
+  <main class="dashboard-main">
+    <header class="top-bar">
+      <div class="top-bar-title">Loan Management System</div>
+      <button class="notification-button" type="button"
+        aria-label="Notifications">
+        ♧
+        <span class="notification-count">{{ notificationCount }}</span>
+      </button>
+    </header>
+
+    <section class="welcome-bar">
+      <h2>Welcome, Customer</h2>
+      <span class="role-badge">Customer Dashboard</span>
+    </section>
+
+    <section class="dashboard-content">
+      <h1>Customer Loan Dashboard</h1>
+
+      <div class="loan-selector">
+        <label for="loanAccount">Select Loan Account Number</label>
+        <select id="loanAccount">
+          <option value="">Select Loan Account</option>
+          <option value="LN001">LN001</option>
+        </select>
+      </div>
+
+      <div class="customer-stats">
+        <div class="stat-card">
+          <div class="stat-label">Total Active Loan Accounts</div>
+          <strong>1</strong>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">Loan Account No.</div>
+          <strong>LN001</strong>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">Outstanding Principal</div>
+          <strong>₹0.00</strong>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-label">Next EMI Date</div>
+          <strong>Not available</strong>
+        </div>
+      </div>
+    </section>
+  </main>
+
+</div>

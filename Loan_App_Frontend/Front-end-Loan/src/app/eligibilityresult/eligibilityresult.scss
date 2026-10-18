@@ -1,0 +1,63 @@
+.result-card {
+  background: white;
+  border-radius: 15px;
+  padding: 35px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.status-box {
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  margin-top: 25px;
+}
+
+.approved {
+  background: #d1e7dd;
+  color: #0f5132;
+}
+
+.rejected {
+  background: #f8d7da;
+  color: #842029;
+}
+
+.pending {
+  background: #fff3cd;
+  color: #664d03;
+}
+
+.info-box {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+
+  label {
+    color: gray;
+    font-size: 14px;
+  }
+
+  h5 {
+    margin: 0;
+  }
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+}
+
+.top-actions input,
+.top-actions select,
+.top-actions button {
+  margin-left: 10px;
+}
+
+.id-box {
+  width: 150px;
+}
+
+.tenure-box {
+  width: 140px;
+}

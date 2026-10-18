@@ -1,0 +1,89 @@
+
+.loan-container {
+  padding: 30px;
+  background: #f3f6fc;
+  min-height: 100vh;
+  color: #102544;
+}
+
+h2 {
+  margin-bottom: 25px;
+  font-size: 26px;
+}
+
+.form-group {
+  margin-bottom: 22px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+input,
+select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid #d5deeb;
+  border-radius: 7px;
+  background: white;
+  font-size: 16px;
+  color: #102544;
+}
+
+input[readonly] {
+  background: #e7effc;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+button {
+  padding: 13px 22px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #0757c5;
+  border: 1px solid #0757c5;
+  color: white;
+}
+
+.btn-secondary {
+  background: white;
+  border: 1px solid #0757c5;
+  color: #0757c5;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.success {
+  margin-top: 20px;
+  color: #16803d;
+}
+
+.error {
+  margin-top: 20px;
+  color: #c62828;
+}
+
+@media (max-width: 600px) {
+  .loan-container {
+    padding: 18px;
+  }
+
+  .buttons button {
+    width: 100%;
+  }
+}

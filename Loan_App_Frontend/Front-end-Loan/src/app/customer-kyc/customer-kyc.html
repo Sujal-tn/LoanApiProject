@@ -1,0 +1,175 @@
+
+<div class="kyc-page">
+
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">CUSTOMER PORTAL</p>
+      <h1>KYC Verification</h1>
+      <p class="subtitle">
+        Upload your identity documents and track their verification status.
+      </p>
+    </div>
+
+    <button
+      class="refresh-btn"
+      type="button"
+      (click)="loadDocuments()"
+      [disabled]="loading">
+      Refresh Status
+    </button>
+  </div>
+
+  <div class="message success" *ngIf="successMessage">
+    {{ successMessage }}
+  </div>
+
+  <div class="message error" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <section class="upload-card">
+    <h2>Upload a Document</h2>
+
+    <p class="section-description">
+      Accepted formats: PDF, JPG, JPEG and PNG. Maximum size: 5 MB.
+    </p>
+
+    <form (ngSubmit)="uploadDocument()">
+
+      <div class="form-group">
+        <label for="documentType">Document Type</label>
+
+        <select
+          id="documentType"
+          name="documentType"
+          [(ngModel)]="documentType"
+          required>
+
+          <option value="">Select document type</option>
+
+          <option
+            *ngFor="let type of documentTypes"
+            [value]="type">
+            {{ type }}
+          </option>
+
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="documentFile">Choose File</label>
+
+        <input
+          id="documentFile"
+          name="documentFile"
+          type="file"
+          accept=".pdf,.jpg,.jpeg,.png"
+          (change)="onFileSelected($event)"
+          required>
+
+        <small *ngIf="selectedFile">
+          Selected: {{ selectedFile.name }}
+        </small>
+      </div>
+
+      <button
+        class="upload-btn"
+        type="submit"
+        [disabled]="uploading">
+
+        {{ uploading ? 'Uploading...' : 'Upload Document' }}
+
+      </button>
+
+    </form>
+  </section>
+
+  <section class="documents-card">
+
+    <div class="table-heading">
+      <div>
+        <h2>My Documents</h2>
+
+        <p class="section-description">
+          Check the latest status of your submitted documents.
+        </p>
+      </div>
+
+      <span class="document-count">
+        {{ documents.length }} document(s)
+      </span>
+    </div>
+
+    <div class="loading" *ngIf="loading">
+      Loading your documents...
+    </div>
+
+    <div
+      class="empty-state"
+      *ngIf="!loading && documents.length === 0">
+
+      <h3>No documents uploaded yet</h3>
+
+      <p>Upload your first KYC document using the form above.</p>
+    </div>
+
+    <div
+      class="table-wrapper"
+      *ngIf="!loading && documents.length > 0">
+
+      <table>
+        <thead>
+          <tr>
+            <th>Document Type</th>
+            <th>Upload Date</th>
+            <th>Status</th>
+            <th>Officer's Remarks</th>
+            <th>Review Date</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let doc of documents">
+
+            <td>{{ doc.documentType }}</td>
+
+            <td>
+              {{ doc.uploadedAt | date:'dd MMM yyyy, h:mm a' }}
+            </td>
+
+            <td>
+              <span
+                class="status"
+                [ngClass]="statusClass(doc.verificationStatus)">
+
+                {{ doc.verificationStatus }}
+
+              </span>
+            </td>
+
+            <td>
+              <ng-container
+                *ngIf="doc.verificationStatus.toLowerCase() === 'rejected'; else noRejection">
+
+                {{ doc.rejectionReason || 'No reason provided' }}
+
+              </ng-container>
+
+              <ng-template #noRejection>—</ng-template>
+            </td>
+
+            <td>
+              {{ doc.reviewedAt
+                ? (doc.reviewedAt | date:'dd MMM yyyy, h:mm a')
+                : 'Not reviewed' }}
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+  </section>
+
+</div>

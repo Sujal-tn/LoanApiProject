@@ -1,0 +1,169 @@
+
+<div class="kyc-page">
+
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">LOAN OFFICER PORTAL</p>
+      <h1>KYC Document Review</h1>
+      <p class="subtitle">
+        Review customer documents and approve or reject their submissions.
+      </p>
+    </div>
+
+    <button
+      class="refresh-btn"
+      type="button"
+      (click)="loadPendingDocuments()"
+      [disabled]="loading || processing">
+      Refresh
+    </button>
+  </div>
+
+  <div class="message success" *ngIf="successMessage">
+    {{ successMessage }}
+  </div>
+
+  <div class="message error" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <section class="documents-card">
+
+    <div class="table-heading">
+      <div>
+        <h2>Pending Documents</h2>
+        <p class="section-description">
+          Review the KYC documents awaiting verification.
+        </p>
+      </div>
+
+      <span class="document-count">
+        {{ documents.length }} pending
+      </span>
+    </div>
+
+    <div class="loading" *ngIf="loading">
+      Loading pending documents...
+    </div>
+
+    <div
+      class="empty-state"
+      *ngIf="!loading && documents.length === 0">
+      <h3>No pending documents</h3>
+      <p>There are currently no documents waiting for review.</p>
+    </div>
+
+    <div
+      class="table-wrapper"
+      *ngIf="!loading && documents.length > 0">
+
+      <table>
+        <thead>
+          <tr>
+            <th>Document ID</th>
+            <th>Customer ID</th>
+            <th>Document Type</th>
+            <th>Uploaded Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <ng-container *ngFor="let doc of documents">
+
+            <tr>
+              <td>#{{ doc.documentId }}</td>
+              <td>{{ doc.customerId }}</td>
+              <td>{{ doc.documentType }}</td>
+              <td>
+                {{ doc.uploadedAt | date:'dd MMM yyyy, h:mm a' }}
+              </td>
+
+              <td>
+                <span class="status pending">
+                  {{ doc.verificationStatus }}
+                </span>
+              </td>
+
+              <td>
+                <div
+                  class="action-buttons"
+                  *ngIf="rejectingDocumentId !== doc.documentId">
+
+                  <button
+                    class="approve-btn"
+                    type="button"
+                    (click)="approveDocument(doc.documentId)"
+                    [disabled]="processing">
+                    Approve
+                  </button>
+
+                  <button
+                    class="reject-btn"
+                    type="button"
+                    (click)="openRejectForm(doc.documentId)"
+                    [disabled]="processing">
+                    Reject
+                  </button>
+
+                </div>
+
+                <span *ngIf="rejectingDocumentId === doc.documentId">
+                  Enter rejection reason below.
+                </span>
+              </td>
+            </tr>
+
+            <tr *ngIf="rejectingDocumentId === doc.documentId">
+              <td colspan="6">
+
+                <div class="reject-form">
+
+                  <label [for]="'reason-' + doc.documentId">
+                    Reason for rejection
+                  </label>
+
+                  <textarea
+                    [id]="'reason-' + doc.documentId"
+                    name="rejectionReason"
+                    [(ngModel)]="rejectionReason"
+                    rows="3"
+                    maxlength="500"
+                    placeholder="Explain why this document is rejected">
+                  </textarea>
+
+                  <div class="action-buttons">
+
+                    <button
+                      class="reject-btn"
+                      type="button"
+                      (click)="rejectDocument(doc.documentId)"
+                      [disabled]="processing">
+                      {{ processing ? 'Processing...' : 'Confirm Rejection' }}
+                    </button>
+
+                    <button
+                      class="cancel-btn"
+                      type="button"
+                      (click)="cancelReject()"
+                      [disabled]="processing">
+                      Cancel
+                    </button>
+
+                  </div>
+
+                </div>
+
+              </td>
+            </tr>
+
+          </ng-container>
+        </tbody>
+      </table>
+
+    </div>
+
+  </section>
+
+</div>

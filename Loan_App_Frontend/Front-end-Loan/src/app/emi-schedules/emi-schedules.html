@@ -1,0 +1,114 @@
+<div class="container mt-4">
+  <h2 class="mb-3">EMI Schedules</h2>
+
+  <div class="mb-3">
+    <label for="loanAccount" class="form-label">Select Loan Account</label>
+
+    <select
+      id="loanAccount"
+      class="form-select"
+      [(ngModel)]="selectedLoanAccountId"
+      (change)="getEmiSchedule()"
+    >
+      <option value="">-- Select Loan Account --</option>
+
+      <option *ngFor="let loan of allLoanAccounts" [value]="loan.loanAccountId">
+        {{ loan.loanAccountNo }} - {{ loan.customerName }}
+      </option>
+    </select>
+  </div>
+  <div class="table-responsive mt-4" *ngIf="selectedLoanAccountId">
+    <h4 class="mb-3">EMI Schedule Details</h4>
+
+    <div class="row g-3 mt-2" *ngIf="selectedLoanAccountId">
+      <div class="col-md-4">
+        <div class="card shadow-sm h-100 border-success">
+          <div class="card-body">
+            <h6 class="text-success">Paid EMIs</h6>
+            <p class="mb-1">
+              Count: <strong>{{ paidCount }}</strong>
+            </p>
+            <p class="mb-0">
+              Amount: <strong>{{ paidAmount | currency: 'INR' }}</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card shadow-sm h-100 border-warning">
+          <div class="card-body">
+            <h6 class="text-warning">Pending EMIs</h6>
+            <p class="mb-1">
+              Count: <strong>{{ pendingCount }}</strong>
+            </p>
+            <p class="mb-0">
+              Amount: <strong>{{ pendingAmount | currency: 'INR' }}</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card shadow-sm h-100 border-primary">
+          <div class="card-body">
+            <h6 class="text-primary">Remaining Balance</h6>
+            <p class="mb-1">
+              EMIs Left: <strong>{{ pendingCount }}</strong>
+            </p>
+            <p class="mb-0">
+              Balance: <strong>{{ remainingBalance | currency: 'INR' }}</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br /><br />
+
+    <table class="table table-bordered table-striped table-hover align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>Installment</th>
+          <th>Due Date</th>
+          <th>EMI</th>
+          <th>Principal</th>
+          <th>Interest</th>
+          <th>Opening</th>
+          <th>Closing</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let emi of allEmis">
+          <td>{{ emi.EmiScheduleId }}</td>
+          <td>{{ emi.installmentNo }}</td>
+          <td>{{ emi.dueDate | date: 'dd MMM yyyy' }}</td>
+          <td>{{ emi.emi | currency: 'INR' }}</td>
+          <td>{{ emi.principalAmount | currency: 'INR' }}</td>
+          <td>{{ emi.interestAmount | currency: 'INR' }}</td>
+          <td>{{ emi.openingBalance | currency: 'INR' }}</td>
+          <td>{{ emi.closingBalance | currency: 'INR' }}</td>
+          <td [style.color]="emi.paymentStatus == 'Paid' ? 'Green' : 'Red'">
+            {{ emi.paymentStatus }}
+          </td>
+          <td>
+ <button
+  [disabled]="emi.paymentStatus === 'Paid'"
+  class="btn"
+  [routerLink]="['/emi']"
+  [queryParams]="{ id: emi.emiScheduleId ?? emi.EmiScheduleId }">
+  Pay
+</button>
+</td>
+        </tr>
+
+        <tr *ngIf="allEmis.length === 0">
+          <td colspan="8" class="text-center">No EMI records found for this loan.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

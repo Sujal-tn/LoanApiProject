@@ -1,0 +1,86 @@
+
+<div class="payment-page">
+  <div class="payment-container">
+
+    <div class="page-header">
+      <div class="brand-icon">₹</div>
+      <div>
+        <h2>EMI Payment</h2>
+        <p>Loan Management System</p>
+      </div>
+    </div>
+
+    <div class="amount-card">
+      <p>Total Payable Amount</p>
+      <h1>₹{{ emiDetails?.totalPayableAmount ?? 0 | number:'1.2-2' }}</h1>
+      <span>Including applicable charges</span>
+    </div>
+
+    <div class="details-card">
+      <h3>Payment Details</h3>
+
+      <div class="detail-row">
+        <label>Loan Account No.</label>
+        <input class="form-control"
+               [value]="emiDetails?.loanAccountNo ?? ''"
+               readonly>
+      </div>
+
+      <div class="detail-row">
+        <label>Due Date</label>
+        <input class="form-control"
+               [value]="emiDetails?.dueDate ? (emiDetails.dueDate | date:'dd MMM yyyy') : ''"
+               readonly>
+      </div>
+
+      <div class="detail-row">
+        <label>EMI Amount</label>
+        <input class="form-control"
+               [value]="emiDetails?.emiAmount ?? 0"
+               readonly>
+      </div>
+
+      <div class="charges-row">
+        <div>
+          <label>Penalty</label>
+          <p>₹{{ emiDetails?.penaltyAmount ?? 0 }}</p>
+        </div>
+
+        <div>
+          <label>Late Fees</label>
+          <p>₹{{ emiDetails?.lateFees ?? 0 }}</p>
+        </div>
+      </div>
+
+      <div class="total-row">
+        <span>Total to Pay</span>
+        <strong>₹{{ emiDetails?.totalPayableAmount ?? 0 }}</strong>
+      </div>
+
+      <div class="status-row">
+        <span>Payment Status</span>
+        <span class="status-badge"
+              [class.paid]="emiDetails?.paymentStatus === 'Paid'">
+          {{ emiDetails?.paymentStatus ?? 'Loading...' }}
+        </span>
+      </div>
+
+      <button
+        type="button"
+        class="pay-button"
+        [disabled]="!emiDetails ||
+                    emiDetails.paymentStatus === 'Paid' ||
+                    emiDetails.paymentStatus !== 'Pending'"
+        (click)="payEmi()">
+
+        {{ emiDetails?.paymentStatus === 'Paid'
+            ? 'EMI Already Paid'
+            : 'Pay Now →' }}
+      </button>
+
+      <p class="secure-text">
+        🔒 Secure payment powered by Razorpay
+      </p>
+    </div>
+  </div>
+</div>

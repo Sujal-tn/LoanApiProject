@@ -1,0 +1,112 @@
+<div class="container mt-5">
+
+  <div class="alert alert-success" *ngIf="successMessage()">
+    {{successMessage()}}
+  </div>
+
+  <div class="alert alert-danger" *ngIf="errorMessage()">
+    {{errorMessage()}}
+  </div>
+
+  <div class="card shadow">
+    <div class="card-header bg-primary text-white">
+      <h4>Loan Officer - Eligibility Check</h4>
+    </div>
+
+    <div class="card-body">
+
+      <div class="row">
+        <div class="col-md-8">
+          <label>Select Pending Customer</label>
+          <select class="form-control" [(ngModel)]="selectedId">
+            <option [ngValue]="0">-- Select Customer --</option>
+            <option *ngFor="let c of reviews()" [ngValue]="c.customerId">
+              {{c.firstName}} {{c.lastName}} (Id: {{c.customerId}})
+            </option>
+          </select>
+        </div>
+
+        <div class="col-md-4 mt-4">
+          <button class="btn btn-primary w-100" (click)="checkEligibility()">
+            Check Eligibility
+          </button>
+        </div>
+      </div>
+
+      <div class="alert alert-info mt-3" *ngIf="loaded() && reviews().length==0">
+        No customers are waiting for manual review.
+      </div>
+
+      <ng-container *ngIf="selected() as s">
+
+        <hr />
+
+        <h5>Customer Details</h5>
+
+        <table class="table table-bordered mt-3">
+          <tr>
+            <th>Customer Name</th>
+            <td>{{s.firstName}} {{s.lastName}}</td>
+          </tr>
+
+          <tr>
+            <th>Monthly Income</th>
+            <td>₹ {{s.monthlyIncome}}</td>
+          </tr>
+
+          <tr>
+            <th>Current CIBIL Score</th>
+            <td>{{s.cibilScore}}</td>
+          </tr>
+
+          <tr>
+            <th>Maximum Loan Amount</th>
+            <td>₹ {{s.loanAmount}}</td>
+          </tr>
+        </table>
+
+        <div class="alert alert-warning">
+          CIBIL score is between 651 and 799. Loan Officer decision required.
+        </div>
+
+        <div class="row">
+
+          <div class="col-md-3">
+            <button class="btn btn-success w-100" (click)="approve()">
+              Approve
+            </button>
+          </div>
+
+          <div class="col-md-9">
+            <div class="row">
+              <div class="col-md-4">
+                <select class="form-control" [(ngModel)]="rejectionReason">
+                  <option value="">-- Select Reason --</option>
+                  <option value="Low Income">Low Income</option>
+                  <option value="Incomplete Documents">Incomplete Documents</option>
+                  <option value="High Risk Customer">High Risk Customer</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div class="col-md-4">
+                <input type="text" class="form-control" placeholder="Enter other reason"
+                       [(ngModel)]="otherReason" [disabled]="rejectionReason!='Other'" />
+              </div>
+
+              <div class="col-md-4">
+                <button class="btn btn-danger w-100" (click)="reject()">
+                  Reject
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </ng-container>
+
+    </div>
+  </div>
+
+</div>

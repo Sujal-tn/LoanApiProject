@@ -1,0 +1,109 @@
+<ng-container *ngIf="showNavigation; else routedPage">
+  <div class="dashboard-layout" [class.officer-layout]="isOfficer" [class.customer-layout]="!isOfficer">
+    <aside class="sidebar" [class.officer-sidebar]="isOfficer" [class.customer-sidebar]="!isOfficer">
+      <div class="sidebar-title" *ngIf="isOfficer">Loan Officer</div>
+
+      <ng-container *ngIf="isOfficer; else customerNavigation">
+        <a class="menu-item" routerLink="/officer/dashboard">
+          <span class="menu-icon">◉</span><span>Dashboard</span>
+        </a>
+
+        <button type="button" class="menu-item menu-heading" (click)="toggleMenu('customers')">
+          <span class="menu-icon">♧</span><span>Customer Management</span>
+          <span class="chevron">{{ openMenus['customers'] ? '⌄' : '›' }}</span>
+        </button>
+        <div class="submenu" *ngIf="openMenus['customers']">
+          <a routerLink="/officer/customers">Customers</a>
+          <a routerLink="/officer/kyc">KYC Verification</a>
+          <a routerLink="/officer/eligibility-check">Manual Eligibility Review</a>
+          <a routerLink="/officer/score-cards">Score Cards</a>
+        </div>
+
+        <button type="button" class="menu-item menu-heading" (click)="toggleMenu('loans')">
+          <span class="menu-icon">▣</span><span>Loan Processing</span>
+          <span class="chevron">{{ openMenus['loans'] ? '⌄' : '›' }}</span>
+        </button>
+        <div class="submenu" *ngIf="openMenus['loans']">
+          <a routerLink="/officer/loan-applications">Loan Applications</a>
+          <a routerLink="/loan-deal">Loan Deal</a>
+          <a routerLink="/sanction">Sanction Letter</a>
+          <a routerLink="/disbursement">Disbursement</a>
+        </div>
+
+        <button type="button" class="menu-item menu-heading" (click)="toggleMenu('requests')">
+          <span class="menu-icon">▤</span><span>Requests &amp; Collections</span>
+          <span class="chevron">{{ openMenus['requests'] ? '⌄' : '›' }}</span>
+        </button>
+        <div class="submenu" *ngIf="openMenus['requests']">
+          <a routerLink="/officer/closure-requests">Closure Requests</a>
+          <a routerLink="/officer/penalty-charges">Penalty Charges</a>
+        </div>
+
+        <a class="menu-item" routerLink="/officer/support-tickets">
+          <span class="menu-icon">▣</span><span>Support Tickets</span>
+        </a>
+      </ng-container>
+
+      <ng-template #customerNavigation>
+        <button type="button" class="menu-item menu-heading" (click)="toggleMenu('customer')">
+          <span class="menu-icon">◉</span><span>Customer</span>
+          <span class="chevron">{{ openMenus['customer'] ? '⌄' : '›' }}</span>
+        </button>
+        <div class="submenu" *ngIf="openMenus['customer']">
+          <a routerLink="/customer/dashboard">Dashboard</a>
+          <a routerLink="/customer/profile">Profile</a>
+          <a routerLink="/customer/kyc">KYC Verification</a>
+          <a routerLink="/customer/cibil-score">CIBIL Score</a>
+          <a routerLink="/customer/eligibility-result">Eligibility Result</a>
+        </div>
+
+        <button type="button" class="menu-item menu-heading" (click)="toggleMenu('loans')">
+          <span class="menu-icon">▤</span><span>Loan Services</span>
+          <span class="chevron">{{ openMenus['loans'] ? '⌄' : '›' }}</span>
+        </button>
+        <div class="submenu" *ngIf="openMenus['loans']">
+          <a routerLink="/apply-loan">Apply Loan</a>
+          <a routerLink="/customer/track-status">Track Status</a>
+          <a routerLink="/customer/foreclosure-request">Foreclosure Request</a>
+        </div>
+
+        <button type="button" class="menu-item menu-heading" (click)="toggleMenu('payments')">
+          <span class="menu-icon">▣</span><span>Payments</span>
+          <span class="chevron">{{ openMenus['payments'] ? '⌄' : '›' }}</span>
+        </button>
+        <div class="submenu" *ngIf="openMenus['payments']">
+          <a routerLink="/customer/emi-schedule">EMI Schedule</a>
+          <a routerLink="/customer/make-payments">Make Payments</a>
+          <a routerLink="/customer/payment-history">Payment History</a>
+          <a routerLink="/customer/my-penalties">My Penalties</a>
+        </div>
+
+        <a class="menu-item" routerLink="/customer/support">
+          <span class="menu-icon">▣</span><span>Support</span>
+        </a>
+      </ng-template>
+
+      <button type="button" class="menu-item logout-item" (click)="logout()">
+        <span class="menu-icon">⇥</span><span>Logout</span>
+      </button>
+    </aside>
+
+    <main class="dashboard-main">
+      <header class="top-bar">
+        <div class="top-bar-title">Loan Management System</div>
+        <button class="notification-button" type="button" aria-label="Notifications">♧</button>
+      </header>
+      <section class="welcome-bar">
+        <h2>Welcome,</h2>
+        <span class="role-badge">{{ isOfficer ? 'Loan Officer Panel' : 'Customer Portal' }}</span>
+      </section>
+      <section class="dashboard-content routed-content">
+        <router-outlet></router-outlet>
+      </section>
+    </main>
+  </div>
+</ng-container>
+
+<ng-template #routedPage>
+  <router-outlet></router-outlet>
+</ng-template>
